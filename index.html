@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADHS Geschichte Zeitstrahl</title>
+    <style>
+        /* ============================================
+           FARBSCHEMA & CSS-VARIABLEN
+           ============================================ */
+        
+        :root {
+            /* Hintergrundfarben für helle Themen */
+            --color-bg-primary: #fcfcf9;      /* Haupthintergrund (cremeweiß) */
+            --color-bg-secondary: #ffffff;     /* Sekundärer Hintergrund (weiß) */
+            
+            /* Textfarben für helle Themen */
+            --color-text-primary: #134252;     /* Haupttext (dunkles Türkis) */
+            --color-text-secondary: #626c71;   /* Sekundärtext (Grau) */
+            
+            /* Akzentfarben (für interaktive Elemente) */
+            --color-accent: #21808d;           /* Primäre Akzentfarbe (Türkis) */
+            --color-accent-light: #29a6b2;     /* Hellere Akzentfarbe (für Hover-Effekte) */
+            
+            /* Rahmen und Karten */
+            --color-border: rgba(94, 82, 64, 0.2);  /* Rahmenfarbe (halbtransparent) */
+            --color-card-bg: #ffffff;          /* Hintergrund für Info-Boxen (weiß) */
+        }
+
+        /* Dark Mode: Automatische Anpassung bei dunklem Systemthema */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                /* Hintergrundfarben für dunkle Themen */
+                --color-bg-primary: #1f2121;       /* Haupthintergrund (dunkelgrau) */
+                --color-bg-secondary: #262828;     /* Sekundärer Hintergrund (etwas heller) */
+                
+                /* Textfarben für dunkle Themen */
+                --color-text-primary: #f5f5f9;     /* Haupttext (hellgrau) */
+                --color-text-secondary: #a7a9a9;   /* Sekundärtext (mittelgrau) */
+                
+                /* Akzentfarben bleiben ähnlich, aber angepasst */
+                --color-accent: #32b8c6;           /* Primäre Akzentfarbe (helleres Türkis) */
+                --color-accent-light: #2da6b2;     /* Hellere Akzentfarbe */
+                
+                /* Rahmen und Karten für dunkles Theme */
+                --color-border: rgba(119, 124, 124, 0.3);
+                --color-card-bg: #262828;          /* Hintergrund für Info-Boxen (dunkel) */
+            }
+        }
+
+        /* ============================================
+           GLOBALE RESET & BASIS-STYLES
+           ============================================ */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;  /* Stellt sicher, dass Padding in Breite eingerechnet wird */
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;  /* System-Schriftarten */
+            background: var(--color-bg-primary);   /* Haupthintergrundfarbe */
+            color: var(--color-text-primary);      /* Haupttextfarbe */
+            padding: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Container: Begrenzt maximale Breite und zentriert Inhalt */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* ============================================
+           KOPFZEILE (Header)
+           ============================================ */
+        
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        /* Hauptüberschrift: Responsive Schriftgröße mit clamp() */
+        h1 {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);  /* Min: 1.5rem, Optimal: 4vw, Max: 2.5rem */
+            margin-bottom: 0.5rem;
+            color: var(--color-accent);  /* Türkis-Akzentfarbe */
+        }
+
+        /* Untertitel */
+        .subtitle {
+            font-size: clamp(0.9rem, 2vw, 1.1rem);  /* Responsive Schriftgröße */
+            color: var(--color-text-secondary);     /* Graue Sekundärfarbe */
+        }
+
+        /* ============================================
+           TIMELINE-STRUKTUR
+           ============================================ */
+        
+        /* Wrapper: Umschließt gesamte Timeline inkl. Info-Box */
+        .timeline-wrapper {
+            margin-bottom: 2rem;
+        }
+
+        /* Scroll-Container: Ermöglicht horizontales Scrollen der Timeline */
+        .timeline-scroll {
+            overflow-x: auto;      /* Horizontales Scrollen bei Überlauf */
+            overflow-y: visible;   /* Verhindert vertikales Abschneiden */
+            padding: 3rem 1rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Timeline-Hauptcontainer: Horizontal angeordnete Elemente */
+        .timeline {
+            position: relative;
+            display: flex;
+            align-items: center;
+            min-width: max-content;  /* Verhindert Umbruch der Zeitleiste */
+            padding: 0 2rem;
+        }
+
+        /* Timeline-Linie: Horizontale Linie durch alle Zeitpunkte */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 4px;
+            background: var(--color-accent);  /* Türkis-Linie */
+        }
+
+        /* ============================================
+           EPOCHEN-BEREICHE (18. Jh., 19. Jh., 20. Jh.)
+           ============================================ */
+        
+        /* Era-Section: Gruppiert Label + Zeitpunkte einer Epoche */
+        .era-section {
+            display: flex;
+            flex-direction: column;  /* Label oben, Zeitpunkte unten */
+            align-items: center;
+            margin-right: 3rem;      /* Abstand zwischen Epochen */
+        }
+
+        /* Era-Label: Badge mit Epochenbezeichnung (z.B. "18. Jh.") */
+        .era-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--color-accent);           /* Türkis-Text */
+            padding: 0.5rem 1rem;
+            background: var(--color-bg-secondary); /* Weißer/dunkler Hintergrund */
+            border-radius: 8px;
+            border: 2px solid var(--color-accent); /* Türkis-Rahmen */
+            margin-bottom: 1rem;
+            white-space: nowrap;  /* Verhindert Zeilenumbruch */
+            z-index: 20;          /* Liegt über der Timeline-Linie */
+        }
+
+        /* Era-Items: Container für alle Zeitpunkte einer Epoche */
+        .era-items {
+            display: flex;
+            gap: 2rem;  /* Abstand zwischen einzelnen Zeitpunkten */
+        }
+
+        /* ============================================
+           ZEITPUNKTE (klickbare Jahreszahlen)
+           ============================================ */
+        
+        /* Timeline-Item: Einzelner klickbarer Zeitpunkt */
+        .timeline-item {
+            display: flex;
+            flex-direction: column;  /* Marker oben, Jahreszahl unten */
+            align-items: center;
+            cursor: pointer;         /* Zeigt an, dass Element klickbar ist */
+            transition: transform 0.2s ease;
+        }
+
+        /* Hover-Effekt: Leichtes Anheben beim Überfahren mit Maus */
+        .timeline-item:hover {
+            transform: translateY(-3px);
+        }
+
+        /* Timeline-Marker: Kreis auf der Timeline-Linie */
+        .timeline-marker {
+            width: 18px;
+            height: 18px;
+            background: var(--color-bg-primary);   /* Hintergrundfarbe (Mitte des Kreises) */
+            border: 3px solid var(--color-accent); /* Türkis-Rand */
+            border-radius: 50%;  /* Macht aus Quadrat einen Kreis */
+            z-index: 10;         /* Liegt über der Timeline-Linie */
+            transition: all 0.3s ease;
+        }
+
+        /* Aktiver Marker: Größer und gefüllt wenn ausgewählt */
+        .timeline-item.active .timeline-marker {
+            width: 24px;
+            height: 24px;
+            background: var(--color-accent);  /* Gefüllter Kreis (Türkis) */
+            border-width: 4px;
+            box-shadow: 0 0 0 4px rgba(33, 128, 141, 0.2);  /* Leuchtender Effekt */
+        }
+
+        /* Timeline-Date: Jahreszahl unter dem Marker */
+        .timeline-date {
+            font-weight: 600;
+            color: var(--color-text-secondary);  /* Graue Standardfarbe */
+            font-size: 0.85rem;
+            margin-top: 0.75rem;
+            white-space: nowrap;  /* Verhindert Zeilenumbruch */
+            text-align: center;
+            transition: color 0.3s ease;
+        }
+
+        /* Aktive Jahreszahl: Größer und türkis wenn ausgewählt */
+        .timeline-item.active .timeline-date {
+            color: var(--color-accent);  /* Türkis-Farbe */
+            font-size: 0.95rem;          /* Etwas größer */
+        }
+
+        /* ============================================
+           INFO-BOX (Textbereich unter der Timeline)
+           ============================================ */
+        
+        /* Info-Box: Container für alle Informationstexte */
+        .info-box {
+            background: var(--color-card-bg);      /* Weißer/dunkler Hintergrund */
+            border: 2px solid var(--color-border); /* Halbtransparenter Rahmen */
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);  /* Dezenter Schatten */
+            min-height: 150px;       /* Mindesthöhe verhindert "Springen" */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Info-Content: Einzelner Informationstext (standardmäßig versteckt) */
+        .info-content {
+            display: none;  /* Alle Inhalte sind zunächst unsichtbar */
+        }
+
+        /* Aktiver Content: Wird sichtbar wenn Zeitpunkt ausgewählt */
+        .info-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;  /* Sanfte Einblendung */
+        }
+
+        /* Animation: Einblenden mit leichter Bewegung von unten */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);  /* Startet 10px tiefer */
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);     /* Endet an normaler Position */
+            }
+        }
+
+        /* Info-Text: Hauptbeschreibung des historischen Ereignisses */
+        .info-text {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--color-text-secondary);  /* Grauer Text */
+            margin-bottom: 1rem;
+        }
+
+        /* Info-Date: Jahreszahl über dem Beschreibungstext */
+        .info-date {
+            font-weight: 600;
+            color: var(--color-accent);  /* Türkis-Hervorhebung */
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Info-Source: Quellenangabe am Ende jedes Textes */
+        .info-source {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--color-border);  /* Trennlinie */
+        }
+
+        /* Quellenlink: Türkis mit Hover-Effekt */
+        .info-source a {
+            color: var(--color-accent);           /* Türkis-Farbe */
+            text-decoration: none;                /* Keine Unterstreichung standardmäßig */
+            font-size: 0.9rem;
+            transition: color 0.2s ease;
+        }
+
+        /* Hover-Effekt: Helleres Türkis + Unterstreichung */
+        .info-source a:hover {
+            color: var(--color-accent-light);     /* Helleres Türkis */
+            text-decoration: underline;
+        }
+
+        /* Placeholder: Anweisungstext vor erster Auswahl */
+        .placeholder {
+            text-align: center;
+            color: var(--color-text-secondary);  /* Graue Farbe */
+            font-style: italic;                  /* Kursiv für weniger Aufdringlichkeit */
+        }
+
+        /* ============================================
+           RESPONSIVE DESIGN (Mobile/Tablet)
+           Gilt für Bildschirme bis 768px Breite
+           ============================================ */
+        
+        @media (max-width: 768px) {
+            /* Reduzierter Abstand für kleinere Bildschirme */
+            body {
+                padding: 0.5rem;
+            }
+
+            /* Timeline: Weniger Padding auf mobilen Geräten */
+            .timeline-scroll {
+                padding: 2rem 0.5rem;
+            }
+
+            /* Epochen-Bereiche: Engerer Abstand */
+            .era-section {
+                margin-right: 2rem;
+            }
+
+            /* Zeitpunkte: Reduzierter Abstand zwischen Elementen */
+            .era-items {
+                gap: 1.5rem;
+            }
+
+            /* Era-Label: Kleinere Schrift und Padding */
+            .era-label {
+                font-size: 0.75rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            /* Jahreszahlen: Kleinere Schrift */
+            .timeline-date {
+                font-size: 0.75rem;
+            }
+
+            /* Aktive Jahreszahl: Auch auf Mobile etwas größer */
+            .timeline-item.active .timeline-date {
+                font-size: 0.85rem;
+            }
+
+            /* Info-Box: Weniger Padding für mehr Platz */
+            .info-box {
+                padding: 1.5rem;
+            }
+
+            /* Info-Datum: Kleinere Schrift */
+            .info-date {
+                font-size: 1rem;
+            }
+
+            /* Info-Text: Kleinere Schrift für bessere Lesbarkeit */
+            .info-text {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Geschichte der ADHS-Forschung</h1>
+            <p class="subtitle">Von den ersten Beschreibungen bis heute</p>
+        </header>
+
+        <div class="timeline-wrapper">
+            <div class="timeline-scroll">
+                <div class="timeline">
+                    <div class="era-section">
+                        <div class="era-label">18. Jh.</div>
+                        <div class="era-items">
+                            <div class="timeline-item" data-year="1775">
+                                <div class="timeline-marker"></div>
+                                <div class="timeline-date">1775</div>
+                            </div>
+                            <div class="timeline-item" data-year="1798">
+                                <div class="timeline-marker"></div>
+                                <div class="timeline-date">1798</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="era-section">
+                        <div class="era-label">19. Jh.</div>
+                        <div class="era-items">
+                            <div class="timeline-item" data-year="1845">
+                                <div class="timeline-marker"></div>
+                                <div class="timeline-date">1845</div>
+                            </div>
+                            <div class="timeline-item" data-year="1887">
+                                <div class="timeline-marker"></div>
+                                <div class="timeline-date">1887-1901</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="era-section">
+                        <div class="era-label">20. Jh.</div>
+                        <div class="era-items">
+                            <div class="timeline-item" data-year="1902">
+                                <div class="timeline-marker"></div>
+                                <div class="timeline-date">1902</div>
+                            </div>
+                            <div class="timeline-item" data-year="1907">
+                                <div class="timeline-marker"></div>
+                                <div class="timeline-date">1907</div>
+                            </div>
+                            <div class="timeline-item" data-year="1917">
+                                <div class="timeline-marker"></div>
+                                <div class="timeline-date">1917</div>
+                            </div>
+                            <div class="timeline-item" data-year="1932">
+                                <div class="timeline-marker"></div>
+                                <div class="timeline-date">1932</div>
+                            </div>
+                            <div class="timeline-item" data-year="1937">
+                                <div class="timeline-marker"></div>
+                                <div class="timeline-date">1937</div>
+                            </div>
+                            <div class="timeline-item" data-year="1940">
+                                <div class="timeline-marker"></div>
+                                <div class="timeline-date">1940er</div>
+                            </div>
+                            <div class="timeline-item" data-year="1956">
+                                <div class="timeline-marker"></div>
+                                <div class="timeline-date">1956-1958</div>
+                            </div>
+                            <div class="timeline-item" data-year="1960">
+                                <div class="timeline-marker"></div>
+                                <div class="timeline-date">1960</div>
+                            </div>
+                            <div class="timeline-item" data-year="1970">
+                                <div class="timeline-marker"></div>
+                                <div class="timeline-date">1970-heute</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <div class="placeholder">Wählen Sie einen Zeitpunkt aus der Timeline</div>
+
+                <div class="info-content" data-year="1775">
+                    <div class="info-date">1775</div>
+                    <div class="info-text">Melchior Adam Weikard, ein deutscher Arzt, lieferte die erste lehrbuchmäßige Beschreibung einer Störung mit den Merkmalen von ADHS.</div>
+                    <div class="info-source">
+                        <strong>Quelle:</strong> <a href="#" target="_blank">Link zur Quelle</a>
+                    </div>
+                </div>
+
+                <div class="info-content" data-year="1798">
+                    <div class="info-date">1798</div>
+                    <div class="info-text">Alexander Crichton vom Royal College of Physicians (Vereinigtes Königreich) beschrieb eine ähnliche Störung in einem medizinischen Lehrbuch.</div>
+                    <div class="info-source">
+                        <strong>Quelle:</strong> <a href="#" target="_blank">Link zur Quelle</a>
+                    </div>
+                </div>
+
+                <div class="info-content" data-year="1845">
+                    <div class="info-date">1845</div>
+                    <div class="info-text">Heinrich Hoffmann, der spätere Leiter der ersten psychiatrischen Klinik in Frankfurt/Main, beschrieb Hyperaktivität und Aufmerksamkeitsdefizite in einem Kinderbuch, in dem ADHS-ähnliche Verhaltensweisen und die damit verbundenen Beeinträchtigungen dokumentiert wurden.</div>
+                    <div class="info-source">
+                        <strong>Quelle:</strong> <a href="#" target="_blank">Link zur Quelle</a>
+                    </div>
+                </div>
+
+                <div class="info-content" data-year="1887">
+                    <div class="info-date">1887 - 1901</div>
+                    <div class="info-text">Désiré-Magloire Bourneville, Charles Boulanger, Georges Paul-Boncour und Jean Philippe beschrieben ein Äquivalent von ADHS in französischen medizinischen und pädagogischen Schriften.</div>
+                    <div class="info-source">
+                        <strong>Quelle:</strong> <a href="#" target="_blank">Link zur Quelle</a>
+                    </div>
+                </div>
+
+                <div class="info-content" data-year="1902">
+                    <div class="info-date">1902</div>
+                    <div class="info-text">George Still, ein Arzt im Vereinigten Königreich, äußerte sich erstmals über die Störung in einer wissenschaftlichen Zeitschrift.</div>
+                    <div class="info-source">
+                        <strong>Quelle:</strong> <a href="#" target="_blank">Link zur Quelle</a>
+                    </div>
+                </div>
+
+                <div class="info-content" data-year="1907">
+                    <div class="info-date">1907</div>
+                    <div class="info-text">Augusto Vidal Perera schrieb das erste spanische Handbuch der Kinderpsychiatrie. Er beschrieb die Auswirkungen von Unaufmerksamkeit und Hyperaktivität bei Schulkindern.</div>
+                    <div class="info-source">
+                        <strong>Quelle:</strong> <a href="#" target="_blank">Link zur Quelle</a>
+                    </div>
+                </div>
+
+                <div class="info-content" data-year="1917">
+                    <div class="info-date">1917</div>
+                    <div class="info-text">Der spanische Neurologe und Psychiater Gonzalo Rodriguez-Lafora stellte die Symptome von ADHS bei Kindern dar und nahm an, dass sie wahrscheinlich durch eine genetisch bedingte Hirnstörung verursacht wurden.</div>
+                    <div class="info-source">
+                        <strong>Quelle:</strong> <a href="#" target="_blank">Link zur Quelle</a>
+                    </div>
+                </div>
+
+                <div class="info-content" data-year="1932">
+                    <div class="info-date">1932</div>
+                    <div class="info-text">Franz Kramer und Hans Pollnow aus Deutschland äußerten sich ausführlich über ein ADHS-ähnliches Syndrom und prägten den Begriff „hyperkinetische Erkrankung", der später von der Weltgesundheitsorganisation als Begriff übernommen wurde.</div>
+                    <div class="info-source">
+                        <strong>Quelle:</strong> <a href="#" target="_blank">Link zur Quelle</a>
+                    </div>
+                </div>
+
+                <div class="info-content" data-year="1937">
+                    <div class="info-date">1937</div>
+                    <div class="info-text">Charles Bradley aus den USA entdeckte, dass ein Amphetamin-Medikament ADHS-ähnliche Symptome lindert.</div>
+                    <div class="info-source">
+                        <strong>Quelle:</strong> <a href="#" target="_blank">Link zur Quelle</a>
+                    </div>
+                </div>
+
+                <div class="info-content" data-year="1940">
+                    <div class="info-date">1940er</div>
+                    <div class="info-text">ADHS-ähnliche Symptome wurden bei Kindern als „minimale Hirnfunktionsstörung" beschrieben.</div>
+                    <div class="info-source">
+                        <strong>Quelle:</strong> <a href="#" target="_blank">Link zur Quelle</a>
+                    </div>
+                </div>
+
+                <div class="info-content" data-year="1956">
+                    <div class="info-date">1956 - 1958</div>
+                    <div class="info-text">Erster Hinweis in einer Längsschnittstudie zur Persistenz von Verhaltensweisen, die mit minimalen Hirnfunktionsstörungen verbunden sind, bis ins Erwachsenenalter.</div>
+                    <div class="info-source">
+                        <strong>Quelle:</strong> <a href="#" target="_blank">Link zur Quelle</a>
+                    </div>
+                </div>
+
+                <div class="info-content" data-year="1960">
+                    <div class="info-date">1960</div>
+                    <div class="info-text">Die U.S. Food and Drug Administration genehmigte Methylphenidat (Ritalin) für Verhaltensstörungen bei Kindern.</div>
+                    <div class="info-source">
+                        <strong>Quelle:</strong> <a href="#" target="_blank">Link zur Quelle</a>
+                    </div>
+                </div>
+
+                <div class="info-content" data-year="1970">
+                    <div class="info-date">1970 - heute</div>
+                    <div class="info-text">Diagnostische Kriterien für ADHS entwickelten sich auf der Grundlage von Forschungsergebnissen, die bis heute zeigen, dass die Diagnose das Ansprechen auf die Behandlung, den klinischen Verlauf und die Familiengeschichte der Störung vorhersagt.</div>
+                    <div class="info-source">
+                        <strong>Quelle:</strong> <a href="#" target="_blank">Link zur Quelle</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ============================================
+           INTERAKTIVITÄT - JAVASCRIPT
+           Verwaltet Klick-Events und Inhaltsanzeige
+           ============================================ */
+        
+        // Alle klickbaren Timeline-Elemente auswählen
+        const timelineItems = document.querySelectorAll('.timeline-item');
+        
+        // Alle Info-Texte (zunächst versteckt) auswählen
+        const infoContents = document.querySelectorAll('.info-content');
+        
+        // Placeholder-Text (Anweisung vor erster Auswahl) auswählen
+        const placeholder = document.querySelector('.placeholder');
+
+        // Für jeden Timeline-Punkt einen Click-Listener hinzufügen
+        timelineItems.forEach(item => {
+            item.addEventListener('click', function() {
+                // Jahr aus dem data-year Attribut auslesen (z.B. "1775")
+                const year = this.getAttribute('data-year');
+                
+                // SCHRITT 1: Alle Timeline-Items deaktivieren
+                timelineItems.forEach(i => i.classList.remove('active'));
+                
+                // SCHRITT 2: Aktuell geklicktes Item aktivieren
+                this.classList.add('active');
+                
+                // SCHRITT 3: Placeholder-Text ausblenden
+                placeholder.style.display = 'none';
+                
+                // SCHRITT 4: Alle Info-Inhalte deaktivieren
+                infoContents.forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // SCHRITT 5: Passenden Info-Content zum Jahr finden und aktivieren
+                const activeContent = document.querySelector(`.info-content[data-year="${year}"]`);
+                if (activeContent) {
+                    activeContent.classList.add('active');  // Macht den Text sichtbar
+                }
+            });
+        });
+    </script>
+</body>
+</html>
