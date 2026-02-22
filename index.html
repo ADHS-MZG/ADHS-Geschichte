@@ -198,22 +198,22 @@
 
         /* Timeline-Marker: Kreis auf der Timeline-Linie */
         .timeline-marker {
-            width: 18px;
-            height: 18px;
-            background: var(--color-bg-primary);   /* Hintergrundfarbe (Mitte des Kreises) */
-            border: 3px solid var(--color-accent); /* Türkis-Rand */
-            border-radius: 50%;  /* Macht aus Quadrat einen Kreis */
-            z-index: 10;         /* Liegt über der Timeline-Linie */
+            width: 24px;
+            height: 24px;
+            background: var(--color-bg-primary);
+            border: 3px solid var(--color-accent);
+            border-radius: 50%;
+            z-index: 10;
+            transform: scale(0.75);  /* Visuell 18px (0.75 * 24px = 18px) */
             transition: all 0.3s ease;
         }
 
         /* Aktiver Marker: Größer und gefüllt wenn ausgewählt */
         .timeline-item.active .timeline-marker {
-            width: 24px;
-            height: 24px;
-            background: var(--color-accent);  /* Gefüllter Kreis (Türkis) */
+            transform: scale(1);  /* Volle 24px Größe */
+            background: var(--color-accent);
             border-width: 4px;
-            box-shadow: 0 0 0 4px rgba(33, 128, 141, 0.2);  /* Leuchtender Effekt */
+            box-shadow: 0 0 0 4px rgba(33, 128, 141, 0.2);
         }
 
         /* Timeline-Date: Jahreszahl unter dem Marker */
@@ -221,7 +221,7 @@
             font-weight: 600;
             color: var(--color-text-secondary);  /* Graue Standardfarbe */
             font-size: 0.85rem;
-            margin-top: 0.75rem;
+            margin-top: 2rem;
             white-space: nowrap;  /* Verhindert Zeilenumbruch */
             text-align: center;
             transition: color 0.3s ease;
@@ -230,7 +230,7 @@
         /* Aktive Jahreszahl: Größer und türkis wenn ausgewählt */
         .timeline-item.active .timeline-date {
             color: var(--color-accent);  /* Türkis-Farbe */
-            font-size: 0.95rem;          /* Etwas größer */
+            font-size: 0.8rem;          /* Etwas größer */
         }
 
         /* ============================================
@@ -379,8 +379,11 @@
 <body>
     <div class="container">
         <header>
-            <h1>Geschichte der ADHS-Forschung</h1>
-            <p class="subtitle">Von den ersten Beschreibungen bis heute</p>
+            <h1>Ist ADHS eine neumodische Erscheinung?</h1>
+            <p class="subtitle">Die wichtigsten Meilensteine aus der frühen Geschichte der ADHS</p>
+            <div class="infoo-source">
+                <a href="https://www.adhd-federation.org/publications/international-consensus-statement.html" target="_blank">Quelle: World Federation of ADHD - International Consensus Statement</a>
+            </div>
         </header>
 
         <div class="timeline-wrapper">
@@ -464,105 +467,67 @@
                 <div class="info-content" data-year="1775">
                     <div class="info-date">1775</div>
                     <div class="info-text">Melchior Adam Weikard, ein deutscher Arzt, lieferte die erste lehrbuchmäßige Beschreibung einer Störung mit den Merkmalen von ADHS.</div>
-                    <div class="info-source">
-                        <strong>Quelle:</strong> <a href="#" target="_blank">Link zur Quelle</a>
-                    </div>
                 </div>
 
                 <div class="info-content" data-year="1798">
                     <div class="info-date">1798</div>
                     <div class="info-text">Alexander Crichton vom Royal College of Physicians (Vereinigtes Königreich) beschrieb eine ähnliche Störung in einem medizinischen Lehrbuch.</div>
-                    <div class="info-source">
-                        <strong>Quelle:</strong> <a href="#" target="_blank">Link zur Quelle</a>
-                    </div>
                 </div>
 
                 <div class="info-content" data-year="1845">
                     <div class="info-date">1845</div>
                     <div class="info-text">Heinrich Hoffmann, der spätere Leiter der ersten psychiatrischen Klinik in Frankfurt/Main, beschrieb Hyperaktivität und Aufmerksamkeitsdefizite in einem Kinderbuch, in dem ADHS-ähnliche Verhaltensweisen und die damit verbundenen Beeinträchtigungen dokumentiert wurden.</div>
-                    <div class="info-source">
-                        <strong>Quelle:</strong> <a href="#" target="_blank">Link zur Quelle</a>
-                    </div>
                 </div>
 
                 <div class="info-content" data-year="1887">
                     <div class="info-date">1887 - 1901</div>
                     <div class="info-text">Désiré-Magloire Bourneville, Charles Boulanger, Georges Paul-Boncour und Jean Philippe beschrieben ein Äquivalent von ADHS in französischen medizinischen und pädagogischen Schriften.</div>
-                    <div class="info-source">
-                        <strong>Quelle:</strong> <a href="#" target="_blank">Link zur Quelle</a>
-                    </div>
                 </div>
 
                 <div class="info-content" data-year="1902">
                     <div class="info-date">1902</div>
                     <div class="info-text">George Still, ein Arzt im Vereinigten Königreich, äußerte sich erstmals über die Störung in einer wissenschaftlichen Zeitschrift.</div>
-                    <div class="info-source">
-                        <strong>Quelle:</strong> <a href="#" target="_blank">Link zur Quelle</a>
-                    </div>
                 </div>
 
                 <div class="info-content" data-year="1907">
                     <div class="info-date">1907</div>
                     <div class="info-text">Augusto Vidal Perera schrieb das erste spanische Handbuch der Kinderpsychiatrie. Er beschrieb die Auswirkungen von Unaufmerksamkeit und Hyperaktivität bei Schulkindern.</div>
-                    <div class="info-source">
-                        <strong>Quelle:</strong> <a href="#" target="_blank">Link zur Quelle</a>
-                    </div>
                 </div>
 
                 <div class="info-content" data-year="1917">
                     <div class="info-date">1917</div>
                     <div class="info-text">Der spanische Neurologe und Psychiater Gonzalo Rodriguez-Lafora stellte die Symptome von ADHS bei Kindern dar und nahm an, dass sie wahrscheinlich durch eine genetisch bedingte Hirnstörung verursacht wurden.</div>
-                    <div class="info-source">
-                        <strong>Quelle:</strong> <a href="#" target="_blank">Link zur Quelle</a>
-                    </div>
                 </div>
 
                 <div class="info-content" data-year="1932">
                     <div class="info-date">1932</div>
                     <div class="info-text">Franz Kramer und Hans Pollnow aus Deutschland äußerten sich ausführlich über ein ADHS-ähnliches Syndrom und prägten den Begriff „hyperkinetische Erkrankung", der später von der Weltgesundheitsorganisation als Begriff übernommen wurde.</div>
-                    <div class="info-source">
-                        <strong>Quelle:</strong> <a href="#" target="_blank">Link zur Quelle</a>
-                    </div>
                 </div>
 
                 <div class="info-content" data-year="1937">
                     <div class="info-date">1937</div>
                     <div class="info-text">Charles Bradley aus den USA entdeckte, dass ein Amphetamin-Medikament ADHS-ähnliche Symptome lindert.</div>
-                    <div class="info-source">
-                        <strong>Quelle:</strong> <a href="#" target="_blank">Link zur Quelle</a>
-                    </div>
                 </div>
 
                 <div class="info-content" data-year="1940">
                     <div class="info-date">1940er</div>
                     <div class="info-text">ADHS-ähnliche Symptome wurden bei Kindern als „minimale Hirnfunktionsstörung" beschrieben.</div>
-                    <div class="info-source">
-                        <strong>Quelle:</strong> <a href="#" target="_blank">Link zur Quelle</a>
-                    </div>
                 </div>
 
                 <div class="info-content" data-year="1956">
                     <div class="info-date">1956 - 1958</div>
                     <div class="info-text">Erster Hinweis in einer Längsschnittstudie zur Persistenz von Verhaltensweisen, die mit minimalen Hirnfunktionsstörungen verbunden sind, bis ins Erwachsenenalter.</div>
                     <div class="info-source">
-                        <strong>Quelle:</strong> <a href="#" target="_blank">Link zur Quelle</a>
-                    </div>
                 </div>
 
                 <div class="info-content" data-year="1960">
                     <div class="info-date">1960</div>
                     <div class="info-text">Die U.S. Food and Drug Administration genehmigte Methylphenidat (Ritalin) für Verhaltensstörungen bei Kindern.</div>
-                    <div class="info-source">
-                        <strong>Quelle:</strong> <a href="#" target="_blank">Link zur Quelle</a>
-                    </div>
                 </div>
 
                 <div class="info-content" data-year="1970">
                     <div class="info-date">1970 - heute</div>
                     <div class="info-text">Diagnostische Kriterien für ADHS entwickelten sich auf der Grundlage von Forschungsergebnissen, die bis heute zeigen, dass die Diagnose das Ansprechen auf die Behandlung, den klinischen Verlauf und die Familiengeschichte der Störung vorhersagt.</div>
-                    <div class="info-source">
-                        <strong>Quelle:</strong> <a href="#" target="_blank">Link zur Quelle</a>
-                    </div>
                 </div>
             </div>
         </div>
