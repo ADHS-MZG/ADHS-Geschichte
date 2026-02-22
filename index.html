@@ -105,7 +105,7 @@
 
         /* Scroll-Container: Ermöglicht horizontales Scrollen der Timeline */
         .timeline-scroll {
-            overflow-x: auto;      /* Horizontales Scrollen bei Überlauf auf kleinen Bildschirmen */
+            overflow-x: scroll;    /* Scrollbar immer sichtbar */
             overflow-y: visible;   /* Verhindert vertikales Abschneiden */
             padding: 3rem 1rem;
             margin-bottom: 1rem;
@@ -123,17 +123,20 @@
             position: relative;
             display: flex;
             align-items: center;
+            min-width: max-content;   /* Breite passt sich Inhalt an, wird nie kleiner */
             width: 100%;              /* Nutzt volle verfügbare Breite */
             justify-content: space-between;  /* Verteilt Epochen gleichmäßig */
             padding: 0 2rem;
+            --line-left: 0px;         /* CSS-Variable für linke Position */
+            --line-right: 0px;        /* CSS-Variable für rechte Position */
         }
 
-        /* Timeline-Linie: Horizontale Linie durch alle Zeitpunkte */
+        /* Timeline-Linie: Wird durch JavaScript dynamisch positioniert */
         .timeline::before {
             content: '';
             position: absolute;
-            left: 0;
-            right: 0;
+            left: var(--line-left);   /* Verwendet CSS-Variable */
+            right: var(--line-right); /* Verwendet CSS-Variable */
             top: 50%;
             transform: translateY(-50%);
             height: 4px;
@@ -579,6 +582,31 @@
         
         // Placeholder-Text (Anweisung vor erster Auswahl) auswählen
         const placeholder = document.querySelector('.placeholder');
+
+        // Funktion zum Positionieren der Timeline-Linie
+        function positionTimelineLine() {
+            const timeline = document.querySelector('.timeline');
+            const firstMarker = document.querySelector('[data-year="1775"] .timeline-marker');
+            const lastMarker = document.querySelector('[data-year="1970"] .timeline-marker');
+            
+            if (firstMarker && lastMarker && timeline) {
+                const timelineRect = timeline.getBoundingClientRect();
+                const firstMarkerRect = firstMarker.getBoundingClientRect();
+                const lastMarkerRect = lastMarker.getBoundingClientRect();
+                
+                // Berechne Position relativ zum Timeline-Container
+                const leftPos = firstMarkerRect.left - timelineRect.left + (firstMarkerRect.width / 2);
+                const rightPos = timelineRect.right - lastMarkerRect.right + (lastMarkerRect.width / 2);
+                
+                // Setze die berechneten Positionen
+                timeline.style.setProperty('--line-left', leftPos + 'px');
+                timeline.style.setProperty('--line-right', rightPos + 'px');
+            }
+        }
+
+        // Linie beim Laden und bei Größenänderung positionieren
+        positionTimelineLine();
+        window.addEventListener('resize', positionTimelineLine);
 
         // Für jeden Timeline-Punkt einen Click-Listener hinzufügen
         timelineItems.forEach(item => {
