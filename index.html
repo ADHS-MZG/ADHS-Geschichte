@@ -105,10 +105,17 @@
 
         /* Scroll-Container: Ermöglicht horizontales Scrollen der Timeline */
         .timeline-scroll {
-            overflow-x: auto;      /* Horizontales Scrollen bei Überlauf */
+            overflow-x: auto;      /* Horizontales Scrollen bei Überlauf auf kleinen Bildschirmen */
             overflow-y: visible;   /* Verhindert vertikales Abschneiden */
             padding: 3rem 1rem;
             margin-bottom: 1rem;
+        }
+
+        /* Auf großen Bildschirmen: Kein Scroll nötig, volle Breite nutzen */
+        @media (min-width: 1200px) {
+            .timeline-scroll {
+                overflow-x: visible;  /* Kein Scrollen mehr nötig */
+            }
         }
 
         /* Timeline-Hauptcontainer: Horizontal angeordnete Elemente */
@@ -116,7 +123,8 @@
             position: relative;
             display: flex;
             align-items: center;
-            min-width: max-content;  /* Verhindert Umbruch der Zeitleiste */
+            width: 100%;              /* Nutzt volle verfügbare Breite */
+            justify-content: space-between;  /* Verteilt Epochen gleichmäßig */
             padding: 0 2rem;
         }
 
@@ -141,7 +149,8 @@
             display: flex;
             flex-direction: column;  /* Label oben, Zeitpunkte unten */
             align-items: center;
-            margin-right: 3rem;      /* Abstand zwischen Epochen */
+            flex: 1;                 /* Jede Epoche nimmt gleich viel Platz ein */
+            min-width: fit-content;  /* Verhindert Überlauf bei vielen Jahreszahlen */
         }
 
         /* Era-Label: Badge mit Epochenbezeichnung (z.B. "18. Jh.") */
@@ -161,7 +170,9 @@
         /* Era-Items: Container für alle Zeitpunkte einer Epoche */
         .era-items {
             display: flex;
-            gap: 2rem;  /* Abstand zwischen einzelnen Zeitpunkten */
+            justify-content: space-evenly;  /* Verteilt Zeitpunkte gleichmäßig innerhalb der Epoche */
+            width: 100%;                    /* Nutzt volle Breite der Era-Section */
+            gap: 1rem;                      /* Minimaler Abstand zwischen Zeitpunkten */
         }
 
         /* ============================================
